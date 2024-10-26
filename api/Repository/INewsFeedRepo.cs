@@ -1,0 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using api.Entity;
+
+namespace api.Repository
+{
+    public interface INewsFeedRepo: IRepositoryBase<NewsFeed>
+    {
+        Task<List<NewsFeed>> GetNewsFeedByStudentIdAsync(int studentId);
+    }
+}

@@ -1,0 +1,38 @@
+# Các thư mục hệ thống
+.vscode/
+.idea/
+.DS_Store
+
+# Thư mục cấu hình hệ thống của Visual Studio
+.vs/
+
+# Thư mục build
+bin/
+obj/
+
+# Thư viện và gói
+packages/
+*.nupkg
+*.snupkg
+
+# Thông tin cấu hình
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+secrets.json
+
+# Tệp nhật ký
+*.log
+
+# Các file tạm thời và không cần thiết
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Khóa bảo mật (nếu có)
+*.key
+*.pfx
+
+# Các thư mục cache
+TestResults/
