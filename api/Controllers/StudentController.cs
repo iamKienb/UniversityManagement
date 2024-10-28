@@ -22,7 +22,7 @@ namespace api.Controllers
         private readonly IMapper _mapper;
         private readonly TokenUtil _tokenUtil;
 
-        private readonly IStudentSubjectService _studentSubjectService
+        private readonly IStudentSubjectService _studentSubjectService;
         public StudentController(IStudentService studentService, IMapper mapper, TokenUtil tokenUtil, IStudentSubjectService studentSubjectService)
         {
             _studentService = studentService;
