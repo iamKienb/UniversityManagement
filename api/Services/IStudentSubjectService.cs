@@ -11,7 +11,7 @@ namespace api.Services
 {
     public interface IStudentSubjectService
     {
-        Task<PagingResultDto<StudentSubject>> GetSubjectOfStudent(QueryObject queryObject, int studentId);
+        Task<List<StudentSubject>> GetSubjectOfStudent(QueryObject queryObject, int studentId);
 
         Task<StudentSubject> CreateStudentSubject(int studentId, int SubjectId);
 

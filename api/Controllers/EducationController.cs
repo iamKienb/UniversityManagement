@@ -42,16 +42,12 @@ namespace api.Controllers
             }
         }
 
-        [HttpDelete("{id}"), Authorize(Roles = ("2, 3"))]
+        [HttpDelete(), Authorize(Roles = ("2, 3"))]
         public async Task<IActionResult> DeleteEducationForStudent([FromBody] int studentId)
         {
 
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
                 var data = await _educationService.DeleteEducationForStudent(studentId);
                 return Ok(_mapper.Map<EducationDto>(data));
             }
@@ -88,10 +84,6 @@ namespace api.Controllers
 
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
 
                 var data = await _educationService.AcceptStudentForGraduate(id, studentId);
                 return Ok(_mapper.Map<EducationDto>(data));
@@ -106,10 +98,6 @@ namespace api.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
                 var data = await _educationService.GetAllEducationOfStudentGraduated(queryObject);
                 return Ok(data);
 
@@ -125,10 +113,6 @@ namespace api.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
                 var data = await _educationService.GetAllEducationOfStudentNotGraduated(queryObject);
                 return Ok(data);
             }
@@ -142,10 +126,6 @@ namespace api.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
                 var data = await _educationService.GetEducationByStudent(studentId);
                 return Ok(_mapper.Map<EducationDto>(data));
             }

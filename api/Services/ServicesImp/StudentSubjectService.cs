@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using api.Dto;
 using api.Entity;
@@ -59,17 +60,18 @@ namespace api.Services.ServicesImp
             return studentOfSubject;
         }
 
-        public async Task<PagingResultDto<StudentSubject>> GetSubjectOfStudent(QueryObject queryObject, int studentId)
+        public async Task<List<StudentSubject>> GetSubjectOfStudent(QueryObject queryObject, int studentId)
         {
             var pagingResultDto = await _studentSubjectRepo.GetAllAsync(
                 queryObject,
                 where: ss => ss.StudentId == studentId,
-                includes:ss => ss.Subject
+                ss => ss.Student,
+                ss => ss.Subject
             );
             if (pagingResultDto == null)
                 throw new NotFoundException("No subjects found for the specified student.");
 
-            return pagingResultDto;
+            return pagingResultDto.ResultItems;
         }
 
   

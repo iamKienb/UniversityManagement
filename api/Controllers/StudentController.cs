@@ -21,11 +21,14 @@ namespace api.Controllers
         private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
         private readonly TokenUtil _tokenUtil;
-        public StudentController(IStudentService studentService, IMapper mapper, TokenUtil tokenUtil)
+
+        private readonly IStudentSubjectService _studentSubjectService
+        public StudentController(IStudentService studentService, IMapper mapper, TokenUtil tokenUtil, IStudentSubjectService studentSubjectService)
         {
             _studentService = studentService;
             _mapper = mapper;
             _tokenUtil = tokenUtil;
+            _studentSubjectService = studentSubjectService;
         }
 
 
@@ -49,7 +52,7 @@ namespace api.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet , Authorize(Roles = ("1, 2"))]
         public async Task<IActionResult> GetAllStudent([FromQuery] QueryObject queryObject)
         {
             try
@@ -119,10 +122,8 @@ namespace api.Controllers
             {
                 return StatusCode(500, new { message = $"Co loi xay ra: {e.Message}" });
             }
-
-
         }
-        [HttpDelete("{id}"), Authorize(Roles = ("1, 2"))]
+        [HttpDelete("{id}"), Authorize(Roles = ("2, 3"))]
         public async Task<IActionResult> DeleteStudentById([FromRoute] int id)
         {
             try
@@ -134,6 +135,59 @@ namespace api.Controllers
             catch (Exception e)
             {
                 return StatusCode(500, new { message = $"Co loi xay ra: {e.Message}" });
+            }
+
+        }
+        [HttpPost("dk-subject"), Authorize(Roles = ("1, 2, 3"))]
+        public async Task<IActionResult> CreateStudentSubject([FromBody] int SubjectId)
+        {
+            try
+            {
+                var studentId = int.Parse(_tokenUtil.GetClaimByType(User, Constant.StudentId).Value);
+                var data = await _studentSubjectService.CreateStudentSubject(studentId, SubjectId);
+                return Ok(data);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { message = $"Co loi xay ra: {e.Message}" });
+            }
+        }
+
+        [HttpDelete("delete-subject"), Authorize(Roles = ("1, 2, 3"))]
+        public async Task<IActionResult> DeleteStudentSubject()
+        {
+            {
+                try
+                {
+                    var studentId = int.Parse(_tokenUtil.GetClaimByType(User, Constant.StudentId).Value);
+                    var data = await _studentSubjectService.DeleteStudentSubject(studentId);
+                    return Ok(data);
+                }
+                catch (Exception e)
+                {
+                    return StatusCode(500, new { message = $"Co loi xay ra: {e.Message}" });
+                }
+
+            }
+        }
+
+        [HttpGet("get-subject"), Authorize(Roles = ("1, 2, 3"))]
+        public async Task<IActionResult> GetSubjectOfStudent(QueryObject queryObject)
+        {
+
+            {
+                try
+                {
+                    var studentId = int.Parse(_tokenUtil.GetClaimByType(User, Constant.StudentId).Value);
+                    var data = await _studentSubjectService.GetSubjectOfStudent(queryObject, studentId);
+                    return Ok(data);
+                }
+                catch (Exception e)
+                {
+                    return StatusCode(500, new { message = $"Co loi xay ra: {e.Message}" });
+                }
+
             }
 
         }

@@ -2,8 +2,8 @@ namespace api.Utils
 {
     public enum RoleEnum
     {
-        admin = 1,
+        student = 1,
         teacher = 2,
-        student = 3,
+        admin = 3
     }
 }

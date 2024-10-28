@@ -104,12 +104,12 @@ namespace api.Controllers
         {
             try
             {
-                var studentId = int.Parse(_tokenUtil.GetClaimByType(User, Constant.StudentId).Value);
+                var studentId =  int.Parse(_tokenUtil.GetClaimByType(User, Constant.StudentId).Value);
                 if (studentId != id)
                 {
                     return Forbid("Unauthorized");
                 }
-                var feed = _newsFeedService.DeleteNewsFeed(id);
+                var feed = await _newsFeedService.DeleteNewsFeed(id);
                 return Ok("Delete Success");
             }
             catch (Exception e)
@@ -133,7 +133,7 @@ namespace api.Controllers
         }
 
         [HttpGet("get-draft-post")]
-        public async Task<IActionResult> getAllDraftPost([FromQuery] QueryObject queryObject)
+        public async Task<IActionResult> GetAllDraftPost([FromQuery] QueryObject queryObject)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace api.Controllers
         }
 
         [HttpPut("public/{id}"), Authorize(Roles = ("1 , 2, 3")) ]
-        public async Task<IActionResult> publishPost([FromRoute]int id)
+        public async Task<IActionResult> PublishPost([FromRoute]int id)
         {
             try
             {
@@ -162,7 +162,7 @@ namespace api.Controllers
         }
 
         [HttpPut("unPublic/{id}"), ]
-        public async Task<IActionResult> unpublishPost(int id)
+        public async Task<IActionResult> UnPublishPost(int id)
         {
             try
             {

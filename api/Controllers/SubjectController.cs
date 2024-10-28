@@ -6,6 +6,7 @@ using api.Dto.Subject;
 using api.Services;
 using api.Utils;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -54,7 +55,7 @@ namespace api.Controllers
         }
 
         // POST: api/subject
-        [HttpPost]
+        [HttpPost , Authorize(Roles = ("2 , 3"))]
         public async Task<ActionResult> CreateSubject([FromBody] CreateSubjectDto subjectDto)
         {
             try
@@ -75,7 +76,7 @@ namespace api.Controllers
         }
 
         // PUT: api/subject/{id}
-        [HttpPut("{id}")]
+        [HttpPut("{id}") , Authorize(Roles = ("2 , 3"))] 
         public async Task<IActionResult> UpdateSubject([FromRoute] int id, [FromBody] UpdateSubjectDto updatedSubjectDto)
         {
             try
@@ -94,7 +95,7 @@ namespace api.Controllers
         }
 
         // DELETE: api/subject/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = ("2 , 3"))]
         public async Task<IActionResult> DeleteSubject([FromRoute] int id)
         {
             try
