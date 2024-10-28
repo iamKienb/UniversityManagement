@@ -13,13 +13,13 @@ namespace api.Services
     {
         Task<Education> CreateEducationForStudent(CreateEducationDto createEducationDto);
 
-        Task DeleteEducationForStudent(int studentId);
+        Task<Education>  DeleteEducationForStudent(int studentId);
 
         Task<Education> UpdateEducationForStudent(UpdateEducationDto updateEducationDto, int id);
 
         Task<Education> GetEducationByStudent(int studentId);
 
-        Task<Education> AcceptStudentForGraduate(int id);
+        Task<Education> AcceptStudentForGraduate(int id,  int studentId);
 
         Task<PagingResultDto<Education>> GetAllEducationOfStudentNotGraduated(QueryObject queryObject);
 

@@ -15,11 +15,13 @@ namespace api.Services.ServicesImp
     public class MajorService : IMajorService
     {
         private readonly IMajorRepo _majorRepo;
+        private readonly Lazy<IStudentService> _studentService;
         private readonly IMapper _mapper;
-        public MajorService(IMajorRepo majorRepo,  IMapper mapper)
+        public MajorService(Lazy<IStudentService> studentService,IMajorRepo majorRepo,  IMapper mapper)
         {
             _majorRepo = majorRepo;
             _mapper = mapper;
+            _studentService = studentService;
         } 
           
         public async Task<Major> CreateMajor(CreateMajorDto createMajorDto)

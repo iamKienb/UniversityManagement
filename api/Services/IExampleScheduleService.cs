@@ -19,7 +19,6 @@ namespace api.Services
 
         Task<ExamSchedule> UpdateExampleSchedule(UpdateExampleScheduleDto updateExampleScheduleDto, int id);
 
-
         Task <List<ExamSchedule>> GetExampleScheduleOfStudent(int studentId);
     }
     

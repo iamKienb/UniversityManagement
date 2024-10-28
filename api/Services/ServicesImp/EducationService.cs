@@ -5,45 +5,141 @@ using System.Threading.Tasks;
 using api.Dto;
 using api.Dto.Education;
 using api.Entity;
+using api.Repository;
 using api.Utils;
+using AutoMapper;
 
 namespace api.Services.ServicesImp
 {
     public class EducationService : IEducationService
     {
-        public Task<Education> AcceptStudentForGraduate(int id)
+        private readonly IEducationRepo _educationRepo;
+        private readonly Lazy<IStudentService> _studentService;
+        private readonly Lazy<IMajorService> _majorService;
+
+        private readonly IMapper _mapper;
+        public EducationService(Lazy<IStudentService> studentService, Lazy<IMajorService> majorService, IMapper mapper, IEducationRepo educationRepo)
         {
-            throw new NotImplementedException();
+            _educationRepo = educationRepo;
+            _majorService = majorService;
+            _mapper = mapper;
+            _studentService = studentService;
+        }
+        public async Task<Education> AcceptStudentForGraduate(int id, int studentId)
+        {
+            var student = _studentService.Value.GetStudentById(studentId);
+            if (student == null)
+            {
+                throw new Exception("Student not found");
+            }
+            var education = await _educationRepo.FindByIdAsync(id);
+            if (education == null)
+            {
+                throw new Exception("Education not found");
+            }
+            education.IsGraduated = true;
+            await _educationRepo.UpdateAsync();
+            return education;
+
         }
 
-        public Task<Education> CreateEducationForStudent(CreateEducationDto createEducationDto)
+   
+
+        public async Task<Education> CreateEducationForStudent(CreateEducationDto createEducationDto)
         {
-            throw new NotImplementedException();
+            var major = _majorService.Value.GetMajorById(createEducationDto.MajorId);
+            if (major == null)
+            {
+                throw new Exception("Major not found");
+            }
+            var student = _studentService.Value.GetStudentById(createEducationDto.StudentId);
+            if (student == null)
+            {
+                throw new Exception("Student not found");
+            }
+
+            var education = _mapper.Map<Education>(createEducationDto);
+            education.IsGraduated = true;
+            await _educationRepo.CreateAsync(education);
+            return education;
         }
 
-        public Task DeleteEducationForStudent(int studentId)
+        public async Task<Education> DeleteEducationForStudent(int studentId)
         {
-            throw new NotImplementedException();
+            var education = await _educationRepo.FindByIdAsync(studentId);
+            if (education == null)
+            {
+                throw new Exception("Education not found");
+            }
+            await _educationRepo.DeleteAsync(education);
+            return education;
         }
 
         public Task<PagingResultDto<Education>> GetAllEducationOfStudentGraduated(QueryObject queryObject)
         {
-            throw new NotImplementedException();
+            var studentsGraduated = _educationRepo.GetAllAsync(queryObject,
+            where: e => e.IsGraduated == true,
+            includes: e => e.Student
+            );
+            if (studentsGraduated == null)
+            {
+                throw new Exception("No student found");
+            }
+            return studentsGraduated;
         }
 
         public Task<PagingResultDto<Education>> GetAllEducationOfStudentNotGraduated(QueryObject queryObject)
         {
-            throw new NotImplementedException();
+            var studentsGraduated = _educationRepo.GetAllAsync(queryObject,
+            where: e => e.IsGraduated == false,
+            includes: e => e.Student
+            );
+            if (studentsGraduated == null)
+            {
+                throw new Exception("No student found");
+            }
+            return studentsGraduated;
         }
 
-        public Task<Education> GetEducationByStudent(int studentId)
+        public async Task<Education> GetEducationByStudent(int studentId)
         {
-            throw new NotImplementedException();
+            var student = _studentService.Value.GetStudentById(studentId);
+            if (student == null)
+            {
+                throw new Exception("Student not found");
+            }
+            var education = await _educationRepo.findOneByConditionAsync(
+                e => e.StudentId == studentId && e.IsGraduated == true
+            );
+            if (education == null)
+            {
+                throw new Exception("No education found");
+            }
+            return education;
         }
 
-        public Task<Education> UpdateEducationForStudent(UpdateEducationDto updateEducationDto, int id)
+        public async Task<Education> UpdateEducationForStudent(UpdateEducationDto updateEducationDto, int id)
         {
-            throw new NotImplementedException();
+            var student = _studentService.Value.GetStudentById(updateEducationDto.StudentId);
+            if (student == null)
+            {
+                throw new Exception("Student not found");
+            }
+            var major = _majorService.Value.GetMajorById(updateEducationDto.MajorId);
+            if (major == null)
+            {
+                throw new Exception("Major not found");
+            }
+            var education = await _educationRepo.FindByIdAsync(id);
+            if (education == null)
+            {
+                throw new Exception("Education not found");
+            }
+
+            _mapper.Map(updateEducationDto, education);
+            await _educationRepo.UpdateAsync();
+            return education;
         }
+
     }
 }
