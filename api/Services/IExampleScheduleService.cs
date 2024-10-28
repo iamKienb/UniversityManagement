@@ -2,23 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dto;
 using api.Dto.ExamSchedule;
+using api.Entity;
 using api.Utils;
 
 namespace api.Services
 {
     public interface IExampleScheduleService
     {
-        Task CreateExampleSchedule(CreateExampleScheduleDto createExampleScheduleDto);
+        Task<ExamSchedule>  CreateExampleSchedule(CreateExampleScheduleDto createExampleScheduleDto);
 
-        Task DeleteExampleSchedule(int id);
+        Task<ExamSchedule> DeleteExampleSchedule(int id);
 
-        Task GetAllExampleSchedules(QueryObject queryObject);
+        Task <PagingResultDto<ExamScheduleDto>>  GetAllExampleSchedules(QueryObject queryObject);
 
-        Task UpdateExampleSchedule(UpdateExampleScheduleDto updateExampleScheduleDto, int id);
+        Task<ExamSchedule> UpdateExampleSchedule(UpdateExampleScheduleDto updateExampleScheduleDto, int id);
 
 
-        Task GetExampleScheduleOfStudent(int studentId);
+        Task <List<ExamSchedule>> GetExampleScheduleOfStudent(int studentId);
     }
     
 }

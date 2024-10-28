@@ -82,9 +82,9 @@ namespace api.Services.ServicesImp
             return schedule;
         }
 
-        public async Task<PagingResultDto<ExamScheduleDto> GetAllExampleSchedules(QueryObject queryObject)
+        public async Task<PagingResultDto<ExamScheduleDto>> GetAllExampleSchedules(QueryObject queryObject)
         {
-            
+
             var schedules = await _exampleScheduleRepo.GetAllAsync(
                 queryObject,
                 where: null,
@@ -94,18 +94,59 @@ namespace api.Services.ServicesImp
             var examScheduleDtos = _mapper.Map<List<ExamScheduleDto>>(schedules.ResultItems);
 
             return new PagingResultDto<ExamScheduleDto>(examScheduleDtos, schedules.TotalRecords, schedules.PageSize, schedules.CurrentPage);
-
-            
         }
 
-        public Task GetExampleScheduleOfStudent(int studentId)
+        public async Task<List<ExamSchedule>> GetExampleScheduleOfStudent(int studentId)
         {
-            throw new NotImplementedException();
+            var student = _studentService.Value.GetStudentById(studentId);
+            if (student == null)
+            {
+                throw new Exception("Student not found");
+            }
+            var schedules = await _examScheduleStudentRepo.findOneByConditionAsync(
+                est => est.StudentId == studentId
+            );
+            if (schedules == null)
+            {
+                throw new Exception("No schedule found for this student");
+            }
+
+
+            var scheduleOfStudent = await _exampleScheduleRepo.GetAllAsync(
+                queryObject: null,
+                where: es => es.Id == schedules.ExamScheduleId,
+                es => es.ExamScheduleSubjects
+            );
+
+            return scheduleOfStudent.ResultItems;
+
         }
 
-        public Task UpdateExampleSchedule(UpdateExampleScheduleDto updateExampleScheduleDto, int id)
+        public async Task<ExamSchedule> UpdateExampleSchedule(UpdateExampleScheduleDto updateExampleScheduleDto, int id)
         {
-            throw new NotImplementedException();
+            var existExamSchedule = await _exampleScheduleRepo.FindByIdAsync(id);
+
+            if (existExamSchedule == null)
+            {
+                throw new Exception("Schedule not found");
+            }
+            var student = _studentService.Value.GetStudentById(updateExampleScheduleDto.StudentId);
+            if (student == null)
+            {
+                throw new Exception("Student not found");
+            }
+            var subject = _subjectService.Value.GetSubjectById(updateExampleScheduleDto.SubjectId);
+            if (subject == null)
+            {
+                throw new Exception("Subject not found");
+            }
+
+            _mapper.Map(updateExampleScheduleDto, existExamSchedule);
+            await _exampleScheduleRepo.UpdateAsync();
+            return existExamSchedule;
+
+
         }
     }
+    
 }
