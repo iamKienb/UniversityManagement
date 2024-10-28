@@ -21,5 +21,11 @@ namespace api.Services
         Task<NewsFeed> DeleteNewsFeed(int id);
 
         Task<List<NewsFeed>> GetFeedsByStudentId(int studentId);
+
+        Task<PagingResultDto<NewsFeed>> GetDraftFeeds(QueryObject queryObject);
+
+        Task<NewsFeed> PublishFeed(int id);
+
+        Task<NewsFeed> UnpublishFeed(int id);
     }
 }

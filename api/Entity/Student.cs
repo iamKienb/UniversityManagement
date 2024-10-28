@@ -30,5 +30,6 @@ namespace api.Entity
 
         public virtual Major Major { get; set; }
 
+
     }
 }

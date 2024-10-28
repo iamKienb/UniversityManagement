@@ -34,7 +34,6 @@ namespace api.Services.ServicesImp
             }
             var newsFeed = _mapper.Map<NewsFeed>(createFeedDto);
             newsFeed.StudentId = existStudent.Id;
-            newsFeed.IsPublished = true;
             await _newsFeedRepo.CreateAsync(newsFeed);
             return newsFeed;
         }
@@ -52,8 +51,18 @@ namespace api.Services.ServicesImp
 
         public async Task<PagingResultDto<NewsFeed>> GetAllNewsFeeds(QueryObject queryObject)
         {
-            var pagingResult = await _newsFeedRepo.GetAllAsync(queryObject, f => f.Student);
+            var pagingResult = await _newsFeedRepo.GetAllAsync(queryObject, r => r.IsPublished == true, f => f.Student);
+            
             return pagingResult;
+        }
+
+        public async Task<PagingResultDto<NewsFeed>> GetDraftFeeds(QueryObject queryObject)
+        {
+            var getAllDraftPost = await _newsFeedRepo.GetAllAsync(queryObject,
+            where: r => r.IsPublished == false, 
+            includes: f => f.Student);
+
+            return new PagingResultDto<NewsFeed>(getAllDraftPost.ResultItems, getAllDraftPost.TotalRecords, getAllDraftPost.PageSize, getAllDraftPost.CurrentPage);
         }
 
         public Task<List<NewsFeed>> GetFeedsByStudentId(int studentId)
@@ -74,6 +83,30 @@ namespace api.Services.ServicesImp
                 throw new Exception("Feed not found");
             }
             return feed;
+        }
+
+        public async Task<NewsFeed> PublishFeed(int id)
+        {
+            var existFeed = await _newsFeedRepo.FindByIdAsync(id);
+            if (existFeed == null)
+            {
+                throw new Exception("Feed not found");
+            }
+            existFeed.IsPublished = true;
+            await _newsFeedRepo.UpdateAsync();
+            return existFeed;
+        }
+
+        public async Task<NewsFeed> UnpublishFeed(int id)
+        {
+            var existFeed = await _newsFeedRepo.FindByIdAsync(id);
+            if (existFeed == null)
+            {
+                throw new Exception("Feed not found");
+            }
+            existFeed.IsPublished = false;
+            await _newsFeedRepo.UpdateAsync();
+            return existFeed;
         }
 
         public async Task<NewsFeed> UpdateNewsFeed(UpdateFeedDto updateFeedDto, int id)

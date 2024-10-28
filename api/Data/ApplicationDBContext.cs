@@ -33,16 +33,38 @@ namespace api.Data
                 .HasForeignKey(n => n.StudentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<ExamSchedule>()
+
+            // Bảng trung gian giữa ExamSchedule và Student
+            modelBuilder.Entity<ExamScheduleStudent>()
+                .HasOne(es => es.ExamSchedule)
+                .WithMany()
+                .HasForeignKey(es => es.ExamScheduleId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ExamScheduleStudent>()
                 .HasOne(es => es.Student)
                 .WithMany()
                 .HasForeignKey(es => es.StudentId)
                 .OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<ExamSchedule>()
+
+
+
+            // Bảng trung gian giữa ExamSchedule và Subject
+            modelBuilder.Entity<ExamScheduleSubject>()
+                .HasOne(es => es.ExamSchedule)
+                .WithMany()
+                .HasForeignKey(es => es.ExamScheduleId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ExamScheduleSubject>()
                 .HasOne(es => es.Subject)
                 .WithMany()
                 .HasForeignKey(es => es.SubjectId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+
+
             modelBuilder.Entity<StudentSubject>()
                 .HasOne(ss => ss.Student)  // Một sinh viên có nhiều môn học thông qua bảng trung gian
                 .WithMany()
@@ -67,7 +89,7 @@ namespace api.Data
         public virtual DbSet<Subject> Subject { get; set; }
 
         public virtual DbSet<ExamSchedule> ExamSchedule { get; set; }
-        
+
         public virtual DbSet<StudentSubject> StudentSubject { get; set; }
 
     }

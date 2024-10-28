@@ -10,7 +10,7 @@ namespace api.Repository
 {
     public interface IRepositoryBase<T>
     {
-        Task<PagingResultDto<T>> GetAllAsync(QueryObject queryObject, params Expression<Func<T, object>>[] includes);
+        Task<PagingResultDto<T>> GetAllAsync(QueryObject queryObject, Expression<Func<T, bool>> where = null, params Expression<Func<T, object>>[] includes);
 
         Task<T> CreateAsync(T entity);
 
@@ -21,5 +21,9 @@ namespace api.Repository
         Task DeleteAsync(T entity);
 
         Task UpdateAsync();
+
+        Task<T> findOneByConditionAsync(Expression<Func<T, bool>> filter);
+
+        Task<List<T>> findAllByConditionAsync(Expression<Func<T, bool>> filter);
     }
 }

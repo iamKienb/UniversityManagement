@@ -18,6 +18,7 @@ namespace api.Entity
         public int AcademicYear { get; set; }
         public TermEnum Term { get; set; }       
         public virtual ICollection<StudentSubject> StudentSubjects { get; set; }
+      
 
     }
 }

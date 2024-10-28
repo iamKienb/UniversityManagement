@@ -2,11 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Data;
+using api.Entity;
 
 namespace api.Repository.RepositoryImp
 {
-    public class StudentSubjectRepo
+    public class StudentSubjectRepo : RepositoryBase<StudentSubject>, IStudentSubjectRepo
     {
-        
+        public StudentSubjectRepo(ApplicationDBContext applicationDBContext): base(applicationDBContext)
+        {
+            
+        }
     }
 }

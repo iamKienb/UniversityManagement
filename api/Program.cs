@@ -35,9 +35,25 @@ builder.Services.AddTransient<IMajorService, MajorService>();
 builder.Services.AddTransient<INewsFeedRepo, NewsFeedRepo>();
 builder.Services.AddTransient<INewsFeedService, NewsFeedService>();
 
+builder.Services.AddTransient<INewsFeedRepo, NewsFeedRepo>();
+builder.Services.AddTransient<INewsFeedService, NewsFeedService>();
+
+builder.Services.AddTransient<IEducationRepo, EducationRepo>();
+builder.Services.AddTransient<IEducationService, EducationService>();
+
+builder.Services.AddTransient<IStudentSubjectRepo, StudentSubjectRepo>();
+builder.Services.AddTransient<IStudentSubjectService, StudentSubjectService>();
+
+builder.Services.AddTransient<IExampleScheduleRepo, ExampleScheduleRepo>();
+builder.Services.AddTransient<IExampleScheduleService, ExampleScheduleService>();
+
 builder.Services.AddTransient<Lazy<IStudentService>>(provider => new Lazy<IStudentService>(provider.GetRequiredService<IStudentService>));
 builder.Services.AddTransient<Lazy<IMajorService>>(provider => new Lazy<IMajorService>(provider.GetRequiredService<IMajorService>));
-builder.Services.AddTransient<Lazy<IMajorService>>(provider => new Lazy<IMajorService>(provider.GetRequiredService<IMajorService>));
+builder.Services.AddTransient<Lazy<IEducationService>>(provider => new Lazy<IEducationService>(provider.GetRequiredService<IEducationService>));
+builder.Services.AddTransient<Lazy<ISubjectService>>(provider => new Lazy<ISubjectService>(provider.GetRequiredService<ISubjectService>));
+builder.Services.AddTransient<Lazy<INewsFeedService>>(provider => new Lazy<INewsFeedService>(provider.GetRequiredService<INewsFeedService>));
+builder.Services.AddTransient<Lazy<IExampleScheduleService>>(provider => new Lazy<IExampleScheduleService>(provider.GetRequiredService<IExampleScheduleService>));
+builder.Services.AddTransient<Lazy<IStudentSubjectService>>(provider => new Lazy<IStudentSubjectService>(provider.GetRequiredService<IStudentSubjectService>));
 
 
 

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dto.Education;
+using api.Dto.ExamSchedule;
 using api.Dto.Feeds;
 using api.Dto.Major;
 using api.Dto.Student;
+using api.Dto.Subject;
 using api.Entity;
 using AutoMapper;
 
@@ -25,8 +27,12 @@ namespace api.Utils
            .ReverseMap();
 
 
-
-
+           CreateMap<Subject, SubjectDto>()
+            .ForMember(dest => dest.Students, opt => opt.MapFrom(src => src.StudentSubjects.Select(ss => ss.Student)));
+        
+           CreateMap<ExamSchedule, ExamScheduleDto>()
+            .ForMember(dest => dest.Subjects, opt => opt.MapFrom(src => src.ExamScheduleSubjects.Select(es => es.Subject)));
+            
            CreateMap<CreateMajorDto, Major>().ReverseMap();
            CreateMap<UpdateMajorDto, Major>().ReverseMap();
            CreateMap<MajorDto, Major>().ReverseMap();

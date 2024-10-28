@@ -12,8 +12,8 @@ namespace api.Dto.ExamSchedule
         public string Room { get; set; }
 
         public string TimeToStart { get; set; }
-        public virtual ICollection<api.Entity.Student> Student { get; set; }
+        public virtual ICollection<api.Entity.Student> Students { get; set; }
 
-        public virtual ICollection<api.Entity.Student> Subject { get; set; }
+        public virtual ICollection<api.Entity.Student> Subjects { get; set; }
     }
 }

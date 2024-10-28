@@ -14,6 +14,6 @@ namespace api.Dto.Subject
         public int Credit { get; set; }
         public int AcademicYear { get; set; }
         public TermEnum Term { get; set; }       
-        public virtual ICollection<StudentSubject> StudentSubjects { get; set; }
+        public virtual ICollection<api.Entity.Student> Students { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using api.Entity;
 
 namespace api.Repository
 {
-    public interface IExampleScheduleRepo: IRepositoryBase<ExamSchedule>
+    public interface IExamScheduleSubjectRepo: IRepositoryBase<ExamScheduleSubject>
     {
         
     }

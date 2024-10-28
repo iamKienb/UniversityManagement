@@ -15,15 +15,9 @@ namespace api.Entity
         public int Id { get; set; }
         public DateTime ExamDate { get; set; }
         public string Room { get; set; }
-
         public string TimeToStart { get; set; }
 
-        public int StudentId { get; set; }
-        public virtual Student Student { get; set; }
-
-
-        public int SubjectId { get; set; }
-        public virtual Subject Subject { get; set; }
-
+        public virtual ICollection<ExamScheduleSubject> ExamScheduleSubjects { get; set; }
+        public virtual ICollection<ExamScheduleStudent> ExamScheduleStudent { get; set; }
     }
 }

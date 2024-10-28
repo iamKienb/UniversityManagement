@@ -132,12 +132,14 @@ namespace api.Controllers
             }
         }
 
-
-        public async Task<IActionResult> getAllDraftPost(int instructorId)
+        [HttpGet("get-draft-post")]
+        public async Task<IActionResult> getAllDraftPost([FromQuery] QueryObject queryObject)
         {
             try
             {
-
+                var data = await _newsFeedService.GetDraftFeeds(queryObject);
+                var feedDtos = _mapper.Map<List<NewFeedDto>>(data.ResultItems);
+                return Ok(new PagingResultDto<NewFeedDto>(feedDtos, data.TotalRecords, data.PageSize, data.CurrentPage));
             }
             catch (Exception e)
             {
@@ -145,11 +147,13 @@ namespace api.Controllers
             }
         }
 
-        public async Task<IActionResult> publishPost(int id, int instructorId)
+        [HttpPut("public/{id}"), Authorize(Roles = ("1 , 2, 3")) ]
+        public async Task<IActionResult> publishPost([FromRoute]int id)
         {
             try
             {
-
+                var data = await _newsFeedService.PublishFeed(id);
+                return Ok(data);
             }
             catch (Exception e)
             {
@@ -157,9 +161,18 @@ namespace api.Controllers
             }
         }
 
-        public async Task<IActionResult> unpublishPost(int id, int instructorId)
+        [HttpPut("unPublic/{id}"), ]
+        public async Task<IActionResult> unpublishPost(int id)
         {
-
+            try
+            {
+                var data = await _newsFeedService.PublishFeed(id);
+                return Ok(data);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { message = $"Co loi xay ra: {e.Message}" });
+            }
         }
     }
 }

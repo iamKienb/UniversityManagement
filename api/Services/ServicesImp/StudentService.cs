@@ -47,7 +47,9 @@ namespace api.Services.ServicesImp
         public  async Task<PagingResultDto<StudentDto>> GetAllStudents(QueryObject queryObject)
         {   
             
-            var pagingResult = await _studentRepo.GetAllAsync(queryObject, s => s.Major);
+            var pagingResult = await _studentRepo.GetAllAsync(queryObject,
+            where: null, 
+            includes: s => s.Major); // có thể thêm nhiều dữ liệu ví dụ  includes: s => s.Major, s => s.Subject
             var studentDtos = _mapper.Map<List<StudentDto>>(pagingResult.ResultItems);
 
             return new PagingResultDto<StudentDto>(studentDtos, pagingResult.TotalRecords, pagingResult.PageSize, pagingResult.CurrentPage);

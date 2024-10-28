@@ -36,3 +36,4 @@ secrets.json
 
 # Các thư mục cache
 TestResults/
+.fake

@@ -7,9 +7,9 @@ using api.Entity;
 
 namespace api.Repository.RepositoryImp
 {
-    public class ExampleScheduleRepo: RepositoryBase<ExamSchedule>, IExampleScheduleRepo
+    public class ExamScheduleSubjectRepo: RepositoryBase<ExamScheduleSubject>, IExamScheduleSubjectRepo
     {
-        public ExampleScheduleRepo(ApplicationDBContext applicationDBContext) : base(applicationDBContext)
+        public ExamScheduleSubjectRepo(ApplicationDBContext applicationDBContext): base(applicationDBContext)
         {
             
         }

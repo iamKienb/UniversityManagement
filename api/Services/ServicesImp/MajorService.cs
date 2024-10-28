@@ -43,7 +43,9 @@ namespace api.Services.ServicesImp
 
         public async Task<PagingResultDto<Major>> GetAllStudentOfMajor(QueryObject queryObject)
         {
-            var pagingResultDto = await _majorRepo.GetAllAsync(queryObject, m => m.Students);
+            var pagingResultDto = await _majorRepo.GetAllAsync(queryObject,
+            where: null,
+            includes: m => m.Students);
             return pagingResultDto;
         }
 
