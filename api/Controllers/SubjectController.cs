@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    [Route("api/student")]
+    [Route("api/subject")]
     [ApiController]
     public class SubjectController : ControllerBase
     {

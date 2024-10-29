@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Dto;
 using api.Dto.Feeds;
 using api.Entity;
+using api.ExceptionHandler;
 using api.Repository;
 using api.Utils;
 using AutoMapper;
@@ -30,7 +31,7 @@ namespace api.Services.ServicesImp
             var existStudent = await _studentService.Value.GetStudentById(StudentId);
             if (existStudent == null)
             {
-                throw new Exception("Student not found");
+                throw new NotFoundException("Student not found");
             }
             var newsFeed = _mapper.Map<NewsFeed>(createFeedDto);
             newsFeed.StudentId = existStudent.Id;
@@ -43,7 +44,7 @@ namespace api.Services.ServicesImp
             var existFeed = await _newsFeedRepo.FindByIdAsync(id);
             if (existFeed == null)
             {
-                throw new Exception("Feed not found");
+                throw new NotFoundException("Feed not found");
             }
             await _newsFeedRepo.DeleteAsync(existFeed); 
             return existFeed;
@@ -70,7 +71,7 @@ namespace api.Services.ServicesImp
             var existingStudent = _studentService.Value.GetStudentById(studentId);
             if (existingStudent == null)
             {
-                throw new Exception("Student not found");
+                throw new NotFoundException("Student not found");
             }
             var feedList = _newsFeedRepo.GetNewsFeedByStudentIdAsync(studentId);
             return feedList;
@@ -80,7 +81,7 @@ namespace api.Services.ServicesImp
         {
             var feed = _newsFeedRepo.FindByIdAsync(id);
             if (feed == null){
-                throw new Exception("Feed not found");
+                throw new NotFoundException("Feed not found");
             }
             return feed;
         }
@@ -90,7 +91,7 @@ namespace api.Services.ServicesImp
             var existFeed = await _newsFeedRepo.FindByIdAsync(id);
             if (existFeed == null)
             {
-                throw new Exception("Feed not found");
+                throw new NotFoundException("Feed not found");
             }
             existFeed.IsPublished = true;
             await _newsFeedRepo.UpdateAsync();
@@ -102,7 +103,7 @@ namespace api.Services.ServicesImp
             var existFeed = await _newsFeedRepo.FindByIdAsync(id);
             if (existFeed == null)
             {
-                throw new Exception("Feed not found");
+                throw new NotFoundException("Feed not found");
             }
             existFeed.IsPublished = false;
             await _newsFeedRepo.UpdateAsync();
@@ -114,7 +115,7 @@ namespace api.Services.ServicesImp
             var existFeed = await _newsFeedRepo.FindByIdAsync(id);
             if (existFeed == null)
             {
-                throw new Exception("Feed not found");
+                throw new NotFoundException("Feed not found");
             }
             _mapper.Map(updateFeedDto, existFeed);
             await _newsFeedRepo.UpdateAsync();

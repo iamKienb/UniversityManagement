@@ -134,7 +134,5 @@ namespace api.Controllers
                 return StatusCode(500, new { message = $"Co loi xay ra: {e.Message}" });
             }
         }
-
-
     }
 }

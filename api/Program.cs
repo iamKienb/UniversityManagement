@@ -47,6 +47,9 @@ builder.Services.AddTransient<IStudentSubjectService, StudentSubjectService>();
 builder.Services.AddTransient<IExampleScheduleRepo, ExampleScheduleRepo>();
 builder.Services.AddTransient<IExampleScheduleService, ExampleScheduleService>();
 
+builder.Services.AddTransient<IExamScheduleStudentRepo, ExamScheduleStudentRepo>();
+builder.Services.AddTransient<IExamScheduleSubjectRepo, ExamScheduleSubjectRepo>();
+
 builder.Services.AddTransient<Lazy<IStudentService>>(provider => new Lazy<IStudentService>(provider.GetRequiredService<IStudentService>));
 builder.Services.AddTransient<Lazy<IMajorService>>(provider => new Lazy<IMajorService>(provider.GetRequiredService<IMajorService>));
 builder.Services.AddTransient<Lazy<IEducationService>>(provider => new Lazy<IEducationService>(provider.GetRequiredService<IEducationService>));

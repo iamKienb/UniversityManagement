@@ -49,13 +49,9 @@ namespace api.Services.ServicesImp
             var student = await _studentService.Value.GetStudentById(studentId);
             if (student == null)
                 throw new NotFoundException("Student not found.");
-
             var studentOfSubject = await _studentSubjectRepo.findOneByConditionAsync(ss => ss.StudentId == studentId);
-
-
             if (studentOfSubject == null)
                 throw new NotFoundException("Student Subject not found.");
-
             await _studentSubjectRepo.DeleteAsync(studentOfSubject);
             return studentOfSubject;
         }
@@ -74,6 +70,5 @@ namespace api.Services.ServicesImp
             return pagingResultDto.ResultItems;
         }
 
-  
     }
 }

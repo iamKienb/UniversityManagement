@@ -32,13 +32,12 @@ namespace api.Services.ServicesImp
             var existingStudent = await _studentRepo.FindUserByEmailAsync(createStudentDto.Email);
             if (existingStudent != null)
             {
-                throw new Exception("Email already exists");
+                throw new BadRequestException("Email already exists");
             }
             var hashedPassword = _handlePassword.HashPassword(createStudentDto.Password);
-            // Ánh xạ từ CreateStudentDto sang Student
             var newStudent = _mapper.Map<Student>(createStudentDto);
             newStudent.Password = hashedPassword;
-            newStudent.Role = RoleEnum.admin;
+            newStudent.Role = RoleEnum.student;
             await _studentRepo.CreateAsync(newStudent);
             return newStudent;
 
@@ -49,15 +48,14 @@ namespace api.Services.ServicesImp
             
             var pagingResult = await _studentRepo.GetAllAsync(queryObject,
             where: null, 
-            includes: s => s.Major); // có thể thêm nhiều dữ liệu ví dụ  includes: s => s.Major, s => s.Subject
+            s => s.Major); //  includes: s => s.Major, s => s.Subject
             var studentDtos = _mapper.Map<List<StudentDto>>(pagingResult.ResultItems);
-
             return new PagingResultDto<StudentDto>(studentDtos, pagingResult.TotalRecords, pagingResult.PageSize, pagingResult.CurrentPage);
         }
 
         public async Task<string> Login(LoginDto loginDto){
             var existingStudent = await _studentRepo.FindUserByEmailAsync(loginDto.Email);
-            if (existingStudent == null || _handlePassword.VerifyPassword(loginDto.Password, existingStudent.Password))
+            if (existingStudent == null ||  !_handlePassword.VerifyPassword(loginDto.Password, existingStudent.Password))
             {
                 throw new BadRequestException("Email or password is not valid");
             }

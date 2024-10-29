@@ -29,7 +29,7 @@ namespace api.Services.ServicesImp
             var existMajor = await _majorRepo.FindByCode(createMajorDto.SubjectCode);
             if (existMajor != null)
             {
-                throw new Exception("Môn học đã tồn tại");
+                throw new Exception("Major already exists");
             }
             var newMajor = _mapper.Map<Major>(createMajorDto);
             await _majorRepo.CreateAsync(newMajor);
@@ -55,7 +55,7 @@ namespace api.Services.ServicesImp
             var existMajor = await _majorRepo.FindByIdAsync(id);
             if (existMajor == null)
             {
-                throw new NotFoundException("Môn học không tồn tại");
+                throw new NotFoundException("Major not found");
             }
             _mapper.Map(updateMajorDto, existMajor);
             await _majorRepo.UpdateAsync();
@@ -66,7 +66,7 @@ namespace api.Services.ServicesImp
             var existMajor = await _majorRepo.FindByIdAsync(id);
             if (existMajor == null)
             {
-                throw new NotFoundException("Môn học không tồn tại");
+                throw new NotFoundException("Major not found");
             }
             await _majorRepo.DeleteAsync(existMajor);
             return existMajor;
@@ -76,7 +76,7 @@ namespace api.Services.ServicesImp
             var major = await _majorRepo.FindByIdAsync(id);
             if (major == null)
             {
-                throw new NotFoundException("Môn học không tồn tại");
+                throw new NotFoundException("Major not found");
             }
             return major;
         }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Dto;
 using api.Dto.Subject;
 using api.Entity;
+using api.ExceptionHandler;
 using api.Repository;
 using api.Utils;
 using AutoMapper;
@@ -34,7 +35,7 @@ namespace api.Services.ServicesImp
 
             if (existSubject == null)
             {
-                throw new Exception("Subject not found");
+                throw new NotFoundException("Subject not found");
             }
 
             await _subjectRepo.DeleteAsync(existSubject);
@@ -56,7 +57,7 @@ namespace api.Services.ServicesImp
 
             if (existSubject == null)
             {
-                throw new Exception("Subject not found");
+                throw new NotFoundException("Subject not found");
             }
             return existSubject;
         }
@@ -67,7 +68,7 @@ namespace api.Services.ServicesImp
 
             if (existSubject == null)
             {
-                throw new Exception("Subject not found");
+                throw new NotFoundException("Subject not found");
             }
 
             _mapper.Map(updateSubjectDto, existSubject);
