@@ -115,13 +115,16 @@ var app = builder.Build();
 app.UseAuthentication(); // Kích hoạt middleware xác thực JWT
 app.UseAuthorization();
 app.MapControllers();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+#if !DEBUG
 app.UseHttpsRedirection();
+#endif
 app.Run();
 
 
